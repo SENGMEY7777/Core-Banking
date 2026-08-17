@@ -28,3 +28,72 @@ Core-Banking is a JavaScript-based core banking project providing the foundation
    Copy `.env.example` to `.env` and fill in values (never commit `.env`).
 
    Example `.env` variables:
+
+   
+4. Run in development
+npm run dev
+# or
+yarn dev
+
+5. Run production build
+npm run build
+npm start
+
+## Scripts
+- `npm run dev` — start dev server (with hot reload)
+- `npm start` — start production server
+- `npm run build` — build for production
+- `npm test` — run tests
+- `npm run lint` — run linter
+
+## Environment & Security
+- Keep sensitive keys (DB credentials, JWT secrets, API keys) out of the repository.
+- Use environment variables or a secrets manager in production.
+- A `.env.example` file is recommended to show required keys without actual secrets.
+
+## Contributing
+Contributions are welcome. Please open issues or PRs and follow any contributor guidelines you add.
+
+## License
+Add your preferred license (e.g., MIT) or include a LICENSE file.
+
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build / output
+dist/
+build/
+coverage/
+.cache/
+
+# Logs
+logs/
+*.log
+pids/
+*.pid
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE / Editor directories
+.vscode/
+.idea/
+*.sublime-workspace
+
+# Environment files (ignore real secrets)
+.env
+.env.*
+.env.local
+.env.*.local
+
+# Optional: keep .env.example tracked (do not ignore)
+# .env.example
+
+# Misc
+coverage/
+.report/
