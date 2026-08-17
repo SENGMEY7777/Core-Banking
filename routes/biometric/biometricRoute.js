@@ -1,21 +1,26 @@
 const router = require('express').Router();
 const authenticateToken = require('../../middlewares/authMiddleware');
 const biometricController = require('../../controllers/biometric/biometricController');
-const validate = require('../../middlewares/validate');
-const {
-  selectActionSchema,
-  sessionIdParamsSchema,
-  enrollSchema,
-  authenticateSchema,
-  revokeSchema
-} = require('../../validators/biometricSchema');
 
-router.get('/menu', authenticateToken, biometricController.getMenu);
-router.post('/select-action', authenticateToken, validate(selectActionSchema), biometricController.selectAction);
-router.get('/session/:sessionId', authenticateToken, validate(sessionIdParamsSchema, 'params'), biometricController.getSession);
-router.get('/session/:sessionId/validate', authenticateToken, validate(sessionIdParamsSchema, 'params'), biometricController.validateSession);
-router.post('/enroll', authenticateToken, validate(enrollSchema), biometricController.enroll);
-router.post('/authenticate', authenticateToken, validate(authenticateSchema), biometricController.authenticate);
-router.post('/revoke', authenticateToken, validate(revokeSchema), biometricController.revoke);
+router.use(authenticateToken);
+
+router.get('/menu', biometricController.getMenu);
+router.post('/select-action', biometricController.selectAction);
+router.get('/session/:sessionId', biometricController.getSession);
+router.get('/session/:sessionId/validate', biometricController.validateSession);
+
+router.post('/enrollment/initiate', biometricController.initiateWebFaceEnrollment);
+router.post('/enrollment/:enrollmentId/auth-check', biometricController.checkAuthenticatedUser);
+router.post('/enrollment/:enrollmentId/challenge', biometricController.requestWebAuthnServerChallengeNonce);
+router.post('/enrollment/:enrollmentId/camera/start', biometricController.startWebCameraStreamAndCaptureFrames);
+router.post('/enrollment/:enrollmentId/liveness', biometricController.verify3DLiveness);
+router.post('/enrollment/:enrollmentId/vector', biometricController.compute512DimFacialVector);
+router.get('/enrollment/:enrollmentId/hardware-prompt', biometricController.promptBrowserHardwareBiometricVerification);
+router.post('/enrollment/:enrollmentId/hardware-verify', biometricController.verifyHardwareSignature);
+router.post('/enrollment/:enrollmentId/complete', biometricController.completeEnrollment);
+
+router.post('/enroll', biometricController.enrollBiometricCredential);
+router.post('/authenticate', biometricController.authenticateAndStepUp);
+router.post('/revoke', biometricController.revokeBiometricCredential);
 
 module.exports = router;
