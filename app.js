@@ -12,11 +12,27 @@ app.use(cors({
     origin: process.env.CORS_ORIGIN || true
 }));
 app.use(express.json());
+app.get('/', (req, res) => {
+    res.json({
+        success: true,
+        message: 'Core Banking API is live and running',
+        endpoints: {
+            adminAuth: '/api/auth/admin',
+            biometrics: '/api/biometrics'
+        }
+    });
+});
+
 app.use('/api/auth/admin', adminRoute);
 app.use('/api/biometrics', biometricRoute);
 
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () => {
+if (!process.env.VERCEL) {
+    app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
-});
+    });
+}
+
+
+module.exports = app;
